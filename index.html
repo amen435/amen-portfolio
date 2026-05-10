@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AMEN — Full-Stack Developer | Addis Ababa</title>
+  <meta name="description" content="AMEN — Full-Stack Developer & Architect of Systems. Building systems that shouldn't exist yet — from database to pixel. Based in Addis Ababa, Ethiopia." />
+  <meta name="keywords" content="Full-Stack Developer, Addis Ababa, Ethiopia, Node.js, React, SaaS, Intelli Campus" />
+  <meta name="author" content="AMEN" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Splitting.js CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css" />
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting-cells.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════ LOADING SCREEN ═══ -->
+  <div id="loader">
+    <canvas id="matrix-canvas"></canvas>
+    <div class="loader-content">
+      <div class="boot-text" id="boot-text">INITIALIZING AMEN.EXE...</div>
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <div class="loader-sub">LOADING ASSETS <span id="pct">0</span>%</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ GLOBAL OVERLAYS ══ -->
+  <div id="crt-overlay"></div>
+  <canvas id="grain-canvas"></canvas>
+
+  <!-- Custom Cursor -->
+  <div id="cursor-ring"></div>
+  <div id="cursor-dot"></div>
+
+  <!-- Sound Toggle -->
+  <button id="sound-toggle" aria-label="Toggle ambient sound">
+    <svg id="sound-icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    </svg>
+    <svg id="sound-icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <line x1="23" y1="9" x2="17" y2="15"/>
+      <line x1="17" y1="9" x2="23" y2="15"/>
+    </svg>
+  </button>
+
+  <!-- Floating Debris -->
+  <div id="debris-container"></div>
+
+  <!-- Easter Egg Glitch Overlay -->
+  <div id="easter-overlay"></div>
+
+  <!-- ═══════════════════════════════════════ NAV ══════════════ -->
+  <nav id="main-nav">
+    <div class="nav-logo">AMEN<span class="cyan">.</span>DEV</div>
+    <ul class="nav-links">
+      <li><a href="#hero" class="nav-link">// Home</a></li>
+      <li><a href="#about" class="nav-link">// About</a></li>
+      <li><a href="#skills" class="nav-link">// Skills</a></li>
+      <li><a href="#projects" class="nav-link">// Projects</a></li>
+      <li><a href="#contact" class="nav-link">// Contact</a></li>
+    </ul>
+    <button id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div id="mobile-menu">
+      <a href="#hero">// Home</a>
+      <a href="#about">// About</a>
+      <a href="#skills">// Skills</a>
+      <a href="#projects">// Projects</a>
+      <a href="#contact">// Contact</a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════ SECTION 1: HERO ══ -->
+  <section id="hero">
+    <!-- Three.js renders here -->
+    <canvas id="hero-canvas"></canvas>
+
+    <div class="hero-content">
+
+      <!-- LEFT: Photo -->
+      <div class="hero-photo-wrap" id="hero-photo-wrap">
+        <div class="hex-container">
+          <svg class="hex-border" viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="glow-hex">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <polygon
+              points="100,5 195,55 195,175 100,225 5,175 5,55"
+              fill="none"
+              stroke="#00ffe7"
+              stroke-width="2"
+              filter="url(#glow-hex)"
+              class="hex-pulse"
+            />
+            <polygon
+              points="100,12 188,60 188,170 100,218 12,170 12,60"
+              fill="none"
+              stroke="#ff00c8"
+              stroke-width="0.5"
+              opacity="0.5"
+            />
+          </svg>
+          <div class="photo-inner">
+            <img
+              id="hero-photo"
+              src="assets/photo.jpg"
+              alt="AMEN — Full-Stack Developer"
+              onerror="this.style.display='none'; document.getElementById('photo-placeholder').style.display='flex'"
+            />
+            <div id="photo-placeholder" class="photo-placeholder">
+              <span>AMEN</span>
+            </div>
+            <div class="photo-glitch-layer"></div>
+          </div>
+          <!-- Holographic rings -->
+          <div class="holo-ring ring-1"></div>
+          <div class="holo-ring ring-2"></div>
+          <div class="holo-ring ring-3"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Text -->
+      <div class="hero-text" id="hero-text">
+        <div class="hero-label" id="hero-label">// FULL-STACK DEVELOPER</div>
+        <h1 class="hero-name" id="hero-name" data-splitting>AMEN</h1>
+        <div class="hero-subtitle" id="hero-subtitle">ARCHITECT OF SYSTEMS</div>
+        <p class="hero-bio" id="hero-bio">
+          Building systems that shouldn't exist yet<br/>
+          — from database to pixel.<span class="cursor-blink">_</span>
+        </p>
+        <div class="hero-buttons" id="hero-buttons">
+          <a href="#projects" class="btn btn-cyan" id="btn-projects">VIEW PROJECTS</a>
+          <a href="#contact" class="btn btn-magenta" id="btn-hire">HIRE ME</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-hint">
+      <span>SCROLL</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ SECTION 2: ABOUT ═══ -->
+  <section id="about">
+    <div class="about-inner">
+
+      <!-- LEFT -->
+      <div class="about-left">
+        <div class="section-label" id="about-label">// WHO.AM.I</div>
+        <h2 class="about-heading" id="about-heading" data-splitting>ARCHITECT<br/>OF SYSTEMS</h2>
+        <p class="about-bio" id="about-bio">
+          I don't just write code — I engineer<br/>
+          experiences. Currently building <span class="accent-cyan">Intelli<br/>
+          Campus AI</span> — a full-stack SaaS platform<br/>
+          reshaping how Ethiopian schools manage<br/>
+          data, learning, and communication.
+        </p>
+        <div class="about-line" id="about-line"></div>
+      </div>
+
+      <!-- RIGHT: stat cards -->
+      <div class="about-stats" id="about-stats">
+        <div class="stat-card" id="stat-1">
+          <div class="stat-num">5<span class="stat-plus">+</span></div>
+          <div class="stat-label">YEARS CODING</div>
+        </div>
+        <div class="stat-card" id="stat-2">
+          <div class="stat-num">120<span class="stat-plus">+</span></div>
+          <div class="stat-label">API ENDPOINTS</div>
+        </div>
+        <div class="stat-card" id="stat-3">
+          <div class="stat-num">12<span class="stat-plus">+</span></div>
+          <div class="stat-label">LIVE PROJECTS</div>
+        </div>
+        <div class="stat-card" id="stat-4">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">COFFEE CONSUMED</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ SECTION 3: WEBGL ════ -->
+  <section id="webgl-scene">
+    <canvas id="scene-canvas"></canvas>
+
+    <!-- Glitch sweep overlays -->
+    <div class="scene-glitch-enter" id="scene-glitch-enter"></div>
+    <div class="scene-glitch-leave" id="scene-glitch-leave"></div>
+
+    <!-- Text overlay -->
+    <div class="scene-text" id="scene-text">
+      <h2 class="scene-heading" id="scene-heading" data-splitting>BUILDING THE FUTURE</h2>
+      <p class="scene-sub" id="scene-sub">ONE COMMIT AT A TIME</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ SECTION 4: SKILLS ═══ -->
+  <section id="skills">
+    <div class="skills-inner">
+      <div class="section-label" id="skills-label">// ARSENAL</div>
+      <h2 class="section-heading" id="skills-heading">TECH STACK</h2>
+
+      <div class="skills-grid">
+        <!-- Skill 1 -->
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-cat">// Backend</span>
+            <span class="skill-pct">92%</span>
+          </div>
+          <h3 class="skill-name">Node.js + Express</h3>
+          <div class="skill-bar-bg">
+            <div class="skill-bar-fill" data-width="92%"></div>
+          </div>
+          <div class="skill-tags">
+            <span>[ REST APIs ]</span><span>[ Prisma ]</span><span>[ JWT ]</span><span>[ RBAC ]</span>
+          </div>
+        </div>
+
+        <!-- Skill 2 -->
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-cat">// Frontend</span>
+            <span class="skill-pct">88%</span>
+          </div>
+          <h3 class="skill-name">React + Vite</h3>
+          <div class="skill-bar-bg">
+            <div class="skill-bar-fill" data-width="88%"></div>
+          </div>
+          <div class="skill-tags">
+            <span>[ React Query ]</span><span>[ Tailwind ]</span><span>[ Axios ]</span>
+          </div>
+        </div>
+
+        <!-- Skill 3 -->
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-cat">// Database</span>
+            <span class="skill-pct">85%</span>
+          </div>
+          <h3 class="skill-name">MySQL / Prisma</h3>
+          <div class="skill-bar-bg">
+            <div class="skill-bar-fill" data-width="85%"></div>
+          </div>
+          <div class="skill-tags">
+            <span>[ ORM ]</span><span>[ Multi-tenant ]</span><span>[ Migrations ]</span>
+          </div>
+        </div>
+
+        <!-- Skill 4 -->
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-cat">// AI Integration</span>
+            <span class="skill-pct">78%</span>
+          </div>
+          <h3 class="skill-name">Gemini AI API</h3>
+          <div class="skill-bar-bg">
+            <div class="skill-bar-fill" data-width="78%"></div>
+          </div>
+          <div class="skill-tags">
+            <span>[ Tutoring AI ]</span><span>[ Analytics ]</span><span>[ Generation ]</span>
+          </div>
+        </div>
+
+        <!-- Skill 5 -->
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-cat">// System Design</span>
+            <span class="skill-pct">90%</span>
+          </div>
+          <h3 class="skill-name">SaaS Architecture</h3>
+          <div class="skill-bar-bg">
+            <div class="skill-bar-fill" data-width="90%"></div>
+          </div>
+          <div class="skill-tags">
+            <span>[ Multi-school ]</span><span>[ RBAC ]</span><span>[ Data isolation ]</span>
+          </div>
+        </div>
+
+        <!-- Skill 6 -->
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-cat">// Tooling</span>
+            <span class="skill-pct">82%</span>
+          </div>
+          <h3 class="skill-name">Dev Toolchain</h3>
+          <div class="skill-bar-bg">
+            <div class="skill-bar-fill" data-width="82%"></div>
+          </div>
+          <div class="skill-tags">
+            <span>[ Git ]</span><span>[ Docker ]</span><span>[ Cursor AI ]</span><span>[ Postman ]</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ SECTION 5: PROJECTS ═ -->
+  <section id="projects">
+    <div class="projects-inner">
+      <div class="section-label" id="projects-label">// ARCHIVE</div>
+      <h2 class="section-heading" id="projects-heading">LIVE SYSTEMS</h2>
+
+      <div class="projects-grid">
+        
+        <!-- Proj 1 -->
+        <div class="project-card">
+          <div class="proj-ghost">01</div>
+          <div class="proj-top">
+            <span class="proj-tag">SaaS Platform</span>
+            <svg class="proj-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </div>
+          <h3 class="proj-title">Intelli Campus AI</h3>
+          <p class="proj-desc">Multi-school SaaS for Ethiopian schools with AI tutoring, attendance, grading, timetables and parent portals.</p>
+          <div class="proj-stack">Node.js, React, MySQL, Prisma, Gemini AI</div>
+          <div class="proj-links">
+            <a href="#" class="proj-link">GITHUB ↗</a>
+            <a href="#" class="proj-link">LIVE ↗</a>
+          </div>
+        </div>
+
+        <!-- Proj 2 -->
+        <div class="project-card">
+          <div class="proj-ghost">02</div>
+          <div class="proj-top">
+            <span class="proj-tag">AI Integration</span>
+            <svg class="proj-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </div>
+          <h3 class="proj-title">AI Tutor Engine</h3>
+          <p class="proj-desc">Gemini-powered chatbot tutor, homework generator and student analytics engine.</p>
+          <div class="proj-stack">Gemini API, Express, React, WebSockets</div>
+          <div class="proj-links">
+            <a href="#" class="proj-link">GITHUB ↗</a>
+            <a href="#" class="proj-link">LIVE ↗</a>
+          </div>
+        </div>
+
+        <!-- Proj 3 -->
+        <div class="project-card">
+          <div class="proj-ghost">03</div>
+          <div class="proj-top">
+            <span class="proj-tag">Backend System</span>
+            <svg class="proj-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </div>
+          <h3 class="proj-title">RBAC Auth Engine</h3>
+          <p class="proj-desc">JWT-based auth with 6-tier role hierarchy SUPER_ADMIN to PARENT with granular permission matrices per module.</p>
+          <div class="proj-stack">JWT, Prisma, Express, MySQL</div>
+          <div class="proj-links">
+            <a href="#" class="proj-link">GITHUB ↗</a>
+          </div>
+        </div>
+
+        <!-- Proj 4 -->
+        <div class="project-card">
+          <div class="proj-ghost">04</div>
+          <div class="proj-top">
+            <span class="proj-tag">Notification System</span>
+            <svg class="proj-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </div>
+          <h3 class="proj-title">Smart Alerts Hub</h3>
+          <p class="proj-desc">In-app and email notifications, absence requests, reminders and printable report cards.</p>
+          <div class="proj-stack">Node.js, Nodemailer, React Query, Cron</div>
+          <div class="proj-links">
+            <a href="#" class="proj-link">GITHUB ↗</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ═══════════════════════════════════ SECTION 6: CONTACT ══ -->
+  <section id="contact">
+    <div class="contact-inner">
+      
+      <!-- LEFT -->
+      <div class="contact-left" id="contact-left">
+        <div class="section-label" id="contact-label">// CONNECT.WITH.ME</div>
+        <h2 class="section-heading" id="contact-heading">LET'S BUILD<br/>SOMETHING</h2>
+        
+        <ul class="contact-info">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            amen@devnull.io
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            Addis Ababa, Ethiopia
+          </li>
+          <li class="status-indicator">
+            <span class="status-dot"></span> Open to opportunities
+          </li>
+        </ul>
+
+        <div class="contact-buttons">
+          <a href="#" class="btn btn-cyan">GITHUB ↗</a>
+          <a href="#" class="btn btn-magenta">LINKEDIN ↗</a>
+        </div>
+      </div>
+
+      <!-- RIGHT FORM -->
+      <div class="contact-right">
+        <form id="contact-form" class="contact-form">
+          <div class="form-group field-anim">
+            <input type="text" name="user_name" id="name" placeholder="[ NAME ]" required />
+            <div class="input-line"></div>
+          </div>
+          <div class="form-group field-anim">
+            <input type="email" name="user_email" id="email" placeholder="[ EMAIL ]" required />
+            <div class="input-line"></div>
+          </div>
+          <div class="form-group field-anim">
+            <textarea name="message" id="message" rows="4" placeholder="[ TRANSMISSION CONTENT ]" required></textarea>
+            <div class="input-line"></div>
+          </div>
+          <button type="submit" class="btn btn-submit field-anim" id="submit-btn">
+            TRANSMIT MESSAGE ↗
+          </button>
+          <div id="form-status" class="form-status"></div>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ FOOTER ══════════════ -->
+  <footer id="footer">
+    <div class="footer-inner">
+      <p>© 2026 AMEN — Engineered with obsession. Built in Addis.</p>
+    </div>
+  </footer>
+
+  <!-- Splitting.js -->
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
